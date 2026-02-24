@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from src.infrastructures.db.exceptions import (
 	RepositoryConflictError,
+	RepositoryReadError,
 	RepositorySaveError
 	)
 
@@ -34,7 +35,7 @@ class HeroRepositorySQLAlchemy(HeroRepositoryProtocol):
 			return [self.mapper.to_entity(hero_model) for hero_model in hero_models]
 		
 		except SQLAlchemyError as e:
-			raise RepositorySaveError(
+			raise RepositoryReadError(
 				"Failed to retrieve heroes from database"
 				) from e
 		
@@ -50,8 +51,8 @@ class HeroRepositorySQLAlchemy(HeroRepositoryProtocol):
 			return self.mapper.to_entity(hero_model) if hero_model else None
 
 		except SQLAlchemyError as e:
-			raise RepositorySaveError(
-				"Failed to retrieve heroes from database"
+			raise RepositoryReadError(
+				f"Failed to retrieve hero with id: '{hero_id}' from database"
 				) from e
 		
 	async def save_hero(
@@ -83,11 +84,6 @@ class HeroRepositorySQLAlchemy(HeroRepositoryProtocol):
 				f"Failed to save hero '{hero_entity.hero_id}': {e}"
 			) from e
 		
-		except Exception as e:
-			raise RepositorySaveError(
-				f"Unexpected error while saving hero '{hero_entity.hero_id}': {e}"
-			) from e
-		
 	async def delete_hero(
 			self, hero_id: UUID
 	) -> None:
@@ -101,7 +97,7 @@ class HeroRepositorySQLAlchemy(HeroRepositoryProtocol):
 
 		except SQLAlchemyError as e:
 			raise RepositorySaveError(
-				f"Failed to delete hero '{hero_id}': {e}"
+				f"Failed to delete hero with id: '{hero_id}': {e}"
 			) from e
 		
 		
