@@ -10,7 +10,7 @@ from src.application.interfaces.mappers import DtoEntityMapperProtocol
 from src.domain.entities.hero import HeroEntity
 from src.application.exceptions import HeroNotFoundError
 
-logger = structlog.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 @final
 @dataclass(frozen=True, kw_only=True, slots=True)

@@ -1,6 +1,6 @@
 from typing import final
 from dataclasses import dataclass
-import logging
+import structlog
 
 from src.application.interfaces.uow import UnitOfWorkProtocol
 from src.application.interfaces.repositories import HeroRepositoryProtocol
@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from types import TracebackType
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 @final
 @dataclass(frozen=True, kw_only=True, slots=True)
