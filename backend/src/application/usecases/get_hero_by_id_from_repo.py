@@ -11,6 +11,9 @@ from src.application.interfaces.mappers import DtoEntityMapperProtocol
 from src.domain.entities.hero import HeroEntity
 from src.application.dtos.hero import HeroDTO
 
+from src.application.usecases.get_hero_from_cache import GetHeroFromCacheUseCase
+from src.application.usecases.save_hero_to_cache import SaveHeroToCacheUseCase
+
 from src.application.exceptions import HeroNotFoundError
 
 logger = structlog.get_logger(__name__)
@@ -22,10 +25,18 @@ class GetHeroFromRepoUseCase:
 	uow: UnitOfWorkProtocol
 	mapper: DtoEntityMapperProtocol
 
+	get_hero_from_cache_usecase: GetHeroFromCacheUseCase
+	save_hero_to_cache_usecase: SaveHeroToCacheUseCase
+
 	async def __call__(
 			self,
 			hero_id: UUID
 			) -> HeroDTO:
+		
+		hero_id_str = str(hero_id)
+		if hero_dto := await self.get_hero_from_cache_usecase(hero_id_str):
+			return hero_dto
+
 		
 		async with self.uow:
 			hero_entity: (
@@ -38,7 +49,11 @@ class GetHeroFromRepoUseCase:
 				)
 
 			logger.info("Hero has been found in repository", hero_id=hero_id)
-			return self.mapper.to_dto(hero_entity)
+			hero_dto = self.mapper.to_dto(hero_entity)
+
+		await self.save_hero_to_cache_usecase(hero_id_str, hero_dto)
+
+		return hero_dto
 		
 			
 

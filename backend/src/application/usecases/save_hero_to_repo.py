@@ -6,6 +6,8 @@ import structlog
 from src.application.interfaces.uow import  UnitOfWorkProtocol
 from src.application.interfaces.mappers import DtoEntityMapperProtocol
 
+from src.application.usecases.invalidate_hero_cache import InvalidateHeroCacheUseCase
+
 from src.application.dtos.hero import(
 	HeroDTO,
 	ManualCreateHeroDTO
@@ -19,6 +21,7 @@ class ManualHeroCreationInRepoUseCase:
 
 	uow: UnitOfWorkProtocol
 	mapper: DtoEntityMapperProtocol
+	invalidate_cache_usecase: InvalidateHeroCacheUseCase
 	
 
 	async def __call__(self, hero_dto: ManualCreateHeroDTO) -> HeroDTO:
@@ -35,5 +38,9 @@ class ManualHeroCreationInRepoUseCase:
 				"Hero has been saved to database",
 				hero_id=hero_entity.hero_id
 			)
-			return self.mapper.to_dto(hero_entity)
+			hero_dto =self.mapper.to_dto(hero_entity)
+
+		await self.invalidate_cache_usecase()
+		
+		return hero_dto
 

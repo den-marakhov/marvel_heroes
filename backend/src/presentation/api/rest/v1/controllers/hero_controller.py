@@ -4,7 +4,8 @@ from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import APIRouter, Path, status
 
 from src.application.usecases.save_hero_to_repo import ManualHeroCreationInRepoUseCase
-from src.application.usecases.get_hero_by_id import GetHeroFromRepoUseCase
+from src.application.usecases.get_hero_by_id_from_repo import GetHeroFromRepoUseCase
+from src.application.usecases.get_heroes_from_repo import GetHeroesFromRepoUseCase
 from src.application.usecases.delete_hero_from_repo import DeleteHeroFromRepoUseCase
 
 from src.presentation.api.rest.v1.schemes.responses import HeroResponseScheme
@@ -16,6 +17,7 @@ router = APIRouter(prefix="/v1/heroes", tags=["Heroes"])
 @router.post(
 	"/",
 	response_model=HeroResponseScheme,
+	status_code=status.HTTP_201_CREATED,
 	summary="manually create hero",
 	responses={
 		201: {"description": "Hero has been created successfully"},
