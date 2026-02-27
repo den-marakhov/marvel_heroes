@@ -5,7 +5,9 @@ from uuid import UUID
 import structlog
 
 from src.application.interfaces.uow import UnitOfWorkProtocol
-from src.application.interfaces.mappers import DtoEntityMapperProtocol
+
+from src.application.usecases.invalidate_hero_cache import InvalidateHeroCacheUseCase
+
 
 from src.domain.entities.hero import HeroEntity
 from src.application.exceptions import HeroNotFoundError
@@ -17,6 +19,7 @@ logger = structlog.get_logger(__name__)
 class DeleteHeroFromRepoUseCase:
 
 		uow: UnitOfWorkProtocol
+		invalidate_cache_usecase: InvalidateHeroCacheUseCase
 
 		async def __call__(
 			self,
@@ -35,4 +38,6 @@ class DeleteHeroFromRepoUseCase:
 				
 				await self.uow.repository.delete_hero(hero_id)
 				logger.info("Hero has been deleted from repo", hero_id=hero_id)
+
+			await self.invalidate_cache_usecase(hero_id=str(hero_id))
 
