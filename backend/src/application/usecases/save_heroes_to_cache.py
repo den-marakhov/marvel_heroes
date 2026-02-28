@@ -14,11 +14,11 @@ logger = structlog.get_logger(__name__)
 @dataclass(frozen=True, kw_only=True, slots=True)
 class SaveHeroesToCacheUseCase:
 
-	client_cache: CacheProtocol
+	cache_client: CacheProtocol
 	serialization_mapper: SerializationMapperProtocol
 
 	async def __call__(self, heroes: list[HeroDTO]) -> None:
-		await self.client_cache.set(
+		await self.cache_client.set(
 			"hero:all",
 			{"data": self.serialization_mapper.to_dict_list(heroes)}
 		)
