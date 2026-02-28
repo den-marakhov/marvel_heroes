@@ -21,6 +21,7 @@ from src.application.interfaces.uow import UnitOfWorkProtocol
 from src.application.interfaces.cache import CacheProtocol
 
 from src.application.usecases.get_hero_by_id_from_repo import GetHeroFromRepoUseCase
+from src.application.usecases.get_heroes_from_repo import GetHeroesFromRepoUseCase
 from src.application.usecases.delete_hero_from_repo import DeleteHeroFromRepoUseCase
 from src.application.usecases.save_hero_to_repo import ManualHeroCreationInRepoUseCase
 from src.application.usecases.get_hero_from_cache import GetHeroFromCacheUseCase
@@ -206,6 +207,21 @@ class UseCaseProvider(Provider):
 			mapper=hero_dto_mapper,
 			get_hero_from_cache_usecase=get_hero_from_cache_usecase,
 			save_hero_to_cache_usecase=save_hero_to_cache_usecase
+		)
+	
+	@provide(scope=Scope.REQUEST)
+	def get_get_heroes_from_repo_usecase(
+		self,
+		uow: UnitOfWorkProtocol,
+		hero_dto_mapper: DtoEntityMapperProtocol,
+		get_heroes_from_cache_usecase: GetHeroesFromCacheUseCase,
+		save_heroes_to_cache_usecase: SaveHeroesToCacheUseCase
+	) -> GetHeroesFromRepoUseCase:
+		return GetHeroesFromRepoUseCase(
+			uow=uow,
+			mapper=hero_dto_mapper,
+			get_heroes_from_cache_usecase=get_heroes_from_cache_usecase,
+			save_heroes_to_cache_usecase=save_heroes_to_cache_usecase
 		)
 	
 	@provide(scope=Scope.REQUEST)
