@@ -55,6 +55,34 @@ class HeroRepositorySQLAlchemy(HeroRepositoryProtocol):
 				f"Failed to retrieve hero with id: '{hero_id}' from database"
 				) from e
 		
+	async def update_hero(
+			self,
+			hero_id: UUID,
+			hero_entity: HeroEntity
+	)	-> None:
+		
+		try:
+			stmt = select(HeroModel).where(
+				HeroModel.hero_id == hero_id
+			)
+			result = await self.session.execute(stmt)
+			hero_model = result.scalar_one_or_none()
+
+			self.mapper.update_model_from_entity(
+				hero_model, hero_entity
+			) if hero_model else None
+		
+		except IntegrityError as e:
+			raise RepositoryConflictError(
+				f"Conflict while saving hero '{hero_entity.hero_id}': {e}"
+			) from e
+		
+		except SQLAlchemyError as e:
+			raise RepositorySaveError(
+				f"Failed to save hero '{hero_entity.hero_id}': {e}"
+			) from e
+
+
 	async def save_hero(
 			self, hero_entity: HeroEntity
 	)-> None:

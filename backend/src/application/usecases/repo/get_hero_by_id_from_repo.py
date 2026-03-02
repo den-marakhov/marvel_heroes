@@ -11,8 +11,8 @@ from src.application.interfaces.mappers import DtoEntityMapperProtocol
 from src.domain.entities.hero import HeroEntity
 from src.application.dtos.hero import HeroDTO
 
-from src.application.usecases.get_hero_from_cache import GetHeroFromCacheUseCase
-from src.application.usecases.save_hero_to_cache import SaveHeroToCacheUseCase
+from src.application.usecases.cache.get_hero_from_cache import GetHeroFromCacheUseCase
+from src.application.usecases.cache.save_hero_to_cache import SaveHeroToCacheUseCase
 
 from src.application.exceptions import HeroNotFoundError
 

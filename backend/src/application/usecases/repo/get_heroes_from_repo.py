@@ -6,8 +6,8 @@ import structlog
 from src.application.dtos.hero import HeroDTO
 from src.application.interfaces.uow import UnitOfWorkProtocol
 
-from src.application.usecases.get_heroes_from_cache import GetHeroesFromCacheUseCase
-from src.application.usecases.save_heroes_to_cache import SaveHeroesToCacheUseCase
+from src.application.usecases.cache.get_heroes_from_cache import GetHeroesFromCacheUseCase
+from src.application.usecases.cache.save_heroes_to_cache import SaveHeroesToCacheUseCase
 
 from src.application.mappers import DtoEntityMapperProtocol
 

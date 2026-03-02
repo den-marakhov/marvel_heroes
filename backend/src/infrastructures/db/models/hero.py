@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import String, Text, UniqueConstraint
+from sqlalchemy import String, Text, UniqueConstraint, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 
@@ -27,6 +27,26 @@ class HeroModel(Base):
 
 	description: Mapped[str] = mapped_column(
 		Text, nullable=False
+	)
+
+	external_id: Mapped[int | None] = mapped_column(
+		Integer, nullable=True
+	)
+
+	full_name: Mapped[str | None] = mapped_column(
+		String(200), nullable=True
+	)
+
+	publisher: Mapped[str | None] = mapped_column(
+		String(100), nullable=True
+	)
+
+	external_img_url: Mapped[str | None] = mapped_column(
+		Text, nullable=True
+	)
+
+	uploaded_img_url: Mapped[str | None] = mapped_column(
+		Text, nullable=True
 	)
 
 

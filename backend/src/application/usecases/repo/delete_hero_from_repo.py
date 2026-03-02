@@ -6,7 +6,7 @@ import structlog
 
 from src.application.interfaces.uow import UnitOfWorkProtocol
 
-from src.application.usecases.invalidate_hero_cache import InvalidateHeroCacheUseCase
+from src.application.usecases.cache.invalidate_hero_cache import InvalidateHeroCacheUseCase
 
 
 from src.domain.entities.hero import HeroEntity

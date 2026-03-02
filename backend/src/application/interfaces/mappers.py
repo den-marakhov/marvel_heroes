@@ -3,11 +3,14 @@ from typing import Protocol
 
 from src.application.dtos.hero import(
 	HeroDTO,
-	ManualCreateHeroDTO
+	ManualCreateHeroDTO,
+	UpdateHeroDTO,
+	ExternalAPIHeroDTO
 )
 
 from src.domain.entities.hero import HeroEntity
 from src.domain.value_objects.hero_name import HeroName
+
 
 
 class DtoEntityMapperProtocol(Protocol):
@@ -24,4 +27,19 @@ class DtoEntityMapperProtocol(Protocol):
 	
 	@abstractmethod
 	def to_entity(self, dto: HeroDTO) -> HeroEntity:
+		...
+
+	@abstractmethod
+	def to_updated_entity(
+		self,
+		dto: HeroDTO,
+		updated_dto: UpdateHeroDTO
+	) -> HeroEntity:
+		...
+
+	@abstractmethod
+	def from_external_dto_to_updated_dto(
+		self,
+		external_dto: ExternalAPIHeroDTO,
+	) -> UpdateHeroDTO:
 		...

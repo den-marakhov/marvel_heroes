@@ -25,3 +25,13 @@ class HeroUpdateRequestScheme(BaseModel):
 	description: str | None = Field(
 		default=None, description="Hero's brief description"
 	)
+
+
+class EnrichHeroBodyScheme(BaseModel):
+
+	model_config=ConfigDict(
+		extra="forbid",
+		frozen=True
+	)
+
+	external_id: int = Field(..., description="Hero id from external API")
