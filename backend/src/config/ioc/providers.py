@@ -1,6 +1,6 @@
 from collections.abc import AsyncIterator
 
-from uuid import UUID
+from httpx import AsyncClient
 
 import redis.asyncio as redis
 from dishka import Provider, Scope, provide
@@ -19,22 +19,29 @@ from src.application.interfaces.serialization import SerializationMapperProtocol
 from src.application.interfaces.repositories import HeroRepositoryProtocol
 from src.application.interfaces.uow import UnitOfWorkProtocol
 from src.application.interfaces.cache import CacheProtocol
+from src.application.interfaces.http_clients import ExternalMarvelApiProtocol
 
-from src.application.usecases.get_hero_by_id_from_repo import GetHeroFromRepoUseCase
-from src.application.usecases.get_heroes_from_repo import GetHeroesFromRepoUseCase
-from src.application.usecases.delete_hero_from_repo import DeleteHeroFromRepoUseCase
-from src.application.usecases.save_hero_to_repo import ManualHeroCreationInRepoUseCase
-from src.application.usecases.get_hero_from_cache import GetHeroFromCacheUseCase
-from src.application.usecases.get_heroes_from_cache import GetHeroesFromCacheUseCase
-from src.application.usecases.invalidate_hero_cache import InvalidateHeroCacheUseCase
-from src.application.usecases.save_hero_to_cache import SaveHeroToCacheUseCase
-from src.application.usecases.save_heroes_to_cache import SaveHeroesToCacheUseCase
+
+from src.application.usecases.repo.get_hero_by_id_from_repo import GetHeroFromRepoUseCase
+from src.application.usecases.repo.get_heroes_from_repo import GetHeroesFromRepoUseCase
+from src.application.usecases.repo.delete_hero_from_repo import DeleteHeroFromRepoUseCase
+from src.application.usecases.repo.save_hero_to_repo import ManualHeroCreationInRepoUseCase
+from src.application.usecases.repo.update_hero_in_repo import UpdateHeroInRepoUseCase
+from src.application.usecases.cache.get_hero_from_cache import GetHeroFromCacheUseCase
+from src.application.usecases.cache.get_heroes_from_cache import GetHeroesFromCacheUseCase
+from src.application.usecases.cache.invalidate_hero_cache import InvalidateHeroCacheUseCase
+from src.application.usecases.cache.save_hero_to_cache import SaveHeroToCacheUseCase
+from src.application.usecases.cache.save_heroes_to_cache import SaveHeroesToCacheUseCase
+from src.application.usecases.external_api.enrich_hero_usecase import EnrichHeroUseCase
+from src.application.usecases.external_api.fetch_heroes_from_external_api import FetchHeroesFromExternalAPIUseCase
 
 from src.infrastructures.db.mappers.hero_db_mapper import HeroDBMapper
 from src.infrastructures.mappers.hero import HeroSerializationMapper
 from src.infrastructures.db.repositories.hero import HeroRepositorySQLAlchemy
 from src.infrastructures.db.uow import UnitOfWorkSQLAlchemy
 from src.infrastructures.cache.redis_client import RedisCacheClient
+from src.infrastructures.http.mappers.external_hero_mapper import ExternalHeroAPIMapper
+from src.infrastructures.http.clients import ExternalMarvelHeroApiClient
 
 from src.presentation.api.rest.v1.mappers.hero_mapper import HeroPresentationMapper
 
@@ -70,6 +77,36 @@ class DatabaseProvider(Provider):
 		async with factory() as session:
 			yield session
 
+class HttpClientProvider(Provider):
+
+	@provide(scope=Scope.APP)
+	async def get_http_client(
+		self,
+		settings: Settings	
+	) -> AsyncIterator[AsyncClient]:
+		client = AsyncClient(
+			follow_redirects=True,
+			timeout=settings.http_timeout
+		)
+
+		try:
+			yield client
+		finally:
+			await client.aclose()
+
+	@provide(scope=Scope.REQUEST)
+	def get_external_api_client(
+		self,
+		settings: Settings,
+		client: AsyncClient,
+		external_api_mapper: ExternalHeroAPIMapper
+	) -> ExternalMarvelApiProtocol:
+		return ExternalMarvelHeroApiClient(
+			base_url=settings.external_api_base_url,
+			api_key=settings.external_api_key,
+			client=client,
+			mapper=external_api_mapper
+		)
 
 class RepositoryProvider(Provider):
 
@@ -112,6 +149,10 @@ class MapperProvider(Provider):
 	@provide(scope=Scope.REQUEST)
 	def get_presentation_mapper(self) -> HeroPresentationMapper:
 		return HeroPresentationMapper()
+	
+	@provide(scope=Scope.REQUEST)
+	def get_external_api_hero_mapper(self) -> ExternalHeroAPIMapper:
+		return ExternalHeroAPIMapper()
 
 
 class CacheProvider(Provider):
@@ -246,4 +287,41 @@ class UseCaseProvider(Provider):
 		return DeleteHeroFromRepoUseCase(
 			uow=uow,
 			invalidate_cache_usecase=invalidate_hero_cache_usecase
+		)
+	
+	@provide(scope=Scope.REQUEST)
+	def get_update_hero_in_repo_usecase(
+		self,
+		uow: UnitOfWorkProtocol,
+		mapper: DtoEntityMapperProtocol,
+		get_get_hero_from_repo_by_id_usecase: GetHeroFromRepoUseCase,
+		get_invalidate_hero_cache_usecase: InvalidateHeroCacheUseCase
+	) -> UpdateHeroInRepoUseCase:
+		return UpdateHeroInRepoUseCase(
+			uow=uow,
+			mapper=mapper,
+			get_hero_from_repo_by_id_usecase=get_get_hero_from_repo_by_id_usecase,
+			invalidate_cache_usecase=get_invalidate_hero_cache_usecase
+		)
+	
+	@provide(scope=Scope.REQUEST)
+	def get_fetch_heroes_from_external_api_usecase(
+		self,
+		api_client: ExternalMarvelApiProtocol
+	) -> FetchHeroesFromExternalAPIUseCase:
+		return FetchHeroesFromExternalAPIUseCase(
+			marvel_hero_api_client=api_client
+		)
+	
+	@provide(scope=Scope.REQUEST)
+	def get_enrich_hero_usecase(
+		self,
+		api_client: ExternalMarvelApiProtocol,
+		mapper: DtoEntityMapperProtocol,
+		update_hero_in_repo_usecase: UpdateHeroInRepoUseCase
+	) -> EnrichHeroUseCase:
+		return EnrichHeroUseCase(
+			marvel_hero_api_client=api_client,
+			mapper=mapper,
+			update_hero_in_repo_usecase=update_hero_in_repo_usecase
 		)

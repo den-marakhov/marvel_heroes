@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 from src.config.app import AppSettings
 from src.config.database import DatabaseSettings
 from src.config.redis import RedisSettings
+from src.config.external_api import ExternalAPISettings
 
 
 class Settings(BaseSettings):
@@ -11,6 +12,7 @@ class Settings(BaseSettings):
 	app: AppSettings = Field(default_factory=AppSettings)
 	database: DatabaseSettings = Field(default_factory=DatabaseSettings)
 	redis: RedisSettings = Field(default_factory=RedisSettings)
+	external_api: ExternalAPISettings = Field(default_factory=ExternalAPISettings)
 
 
 	@property
@@ -40,3 +42,15 @@ class Settings(BaseSettings):
 	@property
 	def redis_cache_ttl(self) -> int:
 		return self.redis.redis_cache_ttl
+	
+	@property
+	def external_api_base_url(self) -> str:
+		return self.external_api.heroes_api_base
+	
+	@property
+	def external_api_key(self) -> str:
+		return self.external_api.api_key
+	
+	@property
+	def http_timeout(self) -> float:
+		return self.external_api.http_timeout

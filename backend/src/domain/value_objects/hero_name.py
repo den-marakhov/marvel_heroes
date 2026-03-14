@@ -30,7 +30,9 @@ class HeroName:
 			raise InvalidHeroNameException(f"Invalid hero name: {self.value}")
 		
 		if len(self.value) < 2 or len(self.value) > 100:
-			raise InvalidHeroNameException(f"Name must be between 2 and 100 characters")
+			raise InvalidHeroNameException(
+				f"Name must be between 2 and 100 characters"
+				)
 		
 	def __str__(self):
 			return self.value
