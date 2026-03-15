@@ -54,7 +54,7 @@ class ExternalAPIHeroDTO:
 @final
 @dataclass(frozen=True, kw_only=True, slots=True)
 class UpdateHeroDTO:
-	name: HeroDTO | None = None
+	name: HeroNameDTO | None = None
 	description: str | None = None
 	external_id: int | None = None
 	full_name: str | None = None
