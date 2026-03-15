@@ -20,7 +20,6 @@ class HeroEntity:
 	external_id: int | None = None
 	full_name: str | None = None
 	publisher: str | None = None
-	external_img_url: str | None = None
 	uploaded_img_url: str | None = None
 
 

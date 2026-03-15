@@ -32,7 +32,6 @@ class HeroPresentationMapper:
 			description=dto.description,
 			full_name=dto.full_name,
 			publisher=dto.publisher,
-			external_img_url=dto.external_img_url,
 			uploaded_img_url=dto.uploaded_img_url,
 			created_at=dto.created_at,
 			updated_at=dto.updated_at,
@@ -47,7 +46,6 @@ class HeroPresentationMapper:
 			name=dto.name,
 			full_name=dto.full_name,
 			publisher=dto.publisher,
-			image_url=dto.image_url
 		)
 	
 	def to_manual_hero_create_dto(

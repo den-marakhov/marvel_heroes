@@ -38,7 +38,6 @@ class HeroDTO:
 	external_id: int | None = None
 	full_name: str | None = None
 	publisher: str | None = None
-	external_img_url: str | None = None
 	uploaded_img_url: str | None = None
 
 
@@ -49,7 +48,6 @@ class ExternalAPIHeroDTO:
 	name: str
 	full_name: str
 	publisher: str
-	image_url: str
 
 @final
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -59,7 +57,6 @@ class UpdateHeroDTO:
 	external_id: int | None = None
 	full_name: str | None = None
 	publisher: str | None = None
-	external_img_url: str | None = None
 	uploaded_img_url: str | None = None
 	
 

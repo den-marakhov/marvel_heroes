@@ -22,7 +22,6 @@ class HeroSerializationMapper(SerializationMapperProtocol):
 			"external_id": hero_dto.external_id,
 			"full_name": hero_dto.full_name,
 			"publisher": hero_dto.publisher,
-			"external_img_url": hero_dto.external_img_url,
 			"uploaded_img_url": hero_dto.uploaded_img_url
 		}
 	
@@ -37,7 +36,6 @@ class HeroSerializationMapper(SerializationMapperProtocol):
 			external_id=data["external_id"],
 			full_name=data["full_name"],
 			publisher=data["publisher"],
-			external_img_url=data["external_img_url"],
 			uploaded_img_url=data["uploaded_img_url"]
 		)
 	

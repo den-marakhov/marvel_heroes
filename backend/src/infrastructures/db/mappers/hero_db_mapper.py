@@ -21,7 +21,6 @@ class HeroDBMapper:
 			external_id=entity.external_id,
 			full_name=entity.full_name,
 			publisher=entity.publisher,
-			external_img_url=entity.external_img_url,
 			uploaded_img_url=entity.uploaded_img_url
 		)
 	
@@ -35,7 +34,6 @@ class HeroDBMapper:
 			external_id=model.external_id,
 			full_name=model.full_name,
 			publisher=model.publisher,
-			external_img_url=model.external_img_url,
 			uploaded_img_url=model.uploaded_img_url
 		)
 	
@@ -50,7 +48,6 @@ class HeroDBMapper:
 		model.external_id = entity.external_id
 		model.full_name = entity.full_name
 		model.publisher = entity.publisher
-		model.external_img_url = entity.external_img_url
 		model.uploaded_img_url = entity.uploaded_img_url
 		
 
