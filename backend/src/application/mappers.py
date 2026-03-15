@@ -39,7 +39,6 @@ class HeroMapper(DtoEntityMapperProtocol):
 			external_id=entity.external_id,
 			full_name=entity.full_name,
 			publisher=entity.publisher,
-			external_img_url=entity.external_img_url,
 			uploaded_img_url=entity.uploaded_img_url
 		)
 	
@@ -54,7 +53,6 @@ class HeroMapper(DtoEntityMapperProtocol):
 			external_id=dto.external_id,
 			full_name=dto.full_name,
 			publisher=dto.publisher,
-			external_img_url=dto.external_img_url,
 			uploaded_img_url=dto.uploaded_img_url
 		)
 	
@@ -91,11 +89,6 @@ class HeroMapper(DtoEntityMapperProtocol):
 				if updated_dto.publisher is not None
 				else dto.publisher
 			),
-			external_img_url=(
-				updated_dto.external_img_url
-        if updated_dto.external_img_url is not None
-        else dto.external_img_url
-			),
 			uploaded_img_url=(
 				updated_dto.uploaded_img_url
         if updated_dto.uploaded_img_url is not None
@@ -111,7 +104,6 @@ class HeroMapper(DtoEntityMapperProtocol):
 			external_id=external_dto.external_id,
 			full_name=external_dto.full_name,
 			publisher=external_dto.publisher,
-			external_img_url=external_dto.image_url
 		)
 	
 	

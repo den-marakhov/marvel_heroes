@@ -13,7 +13,6 @@ class ExternalHeroAPIMapper:
 			name=data["name"],
 			full_name=data["biography"]["full-name"],
 			publisher=data["biography"]["publisher"],
-			image_url=data["image"]["url"]
 		)
 	
 	def to_dto_list(self, data: list[dict]) -> list[ExternalAPIHeroDTO]:

@@ -29,10 +29,6 @@ class HeroModel(Base):
 		Text, nullable=False
 	)
 
-	external_id: Mapped[int | None] = mapped_column(
-		Integer, nullable=True
-	)
-
 	full_name: Mapped[str | None] = mapped_column(
 		String(200), nullable=True
 	)
@@ -41,12 +37,12 @@ class HeroModel(Base):
 		String(100), nullable=True
 	)
 
-	external_img_url: Mapped[str | None] = mapped_column(
+	uploaded_img_url: Mapped[str | None] = mapped_column(
 		Text, nullable=True
 	)
 
-	uploaded_img_url: Mapped[str | None] = mapped_column(
-		Text, nullable=True
+	external_id: Mapped[int | None] = mapped_column(
+		Integer, nullable=True
 	)
 
 

@@ -25,9 +25,6 @@ class HeroResponseScheme(BaseModel):
 	publisher: str | None = Field(
 		default=None, description="Comic Publisher (Marvel)"
 	)
-	external_img_url: str | None = Field(
-		default=None, description="Image url from external API"
-	)
 	uploaded_img_url: str | None = Field(
 		default=None ,description="Uploaded image path"
 	)
@@ -59,9 +56,6 @@ class ExternalHeroResponseScheme(BaseModel):
 		...,
 		description="Comics publisher brand. In our case it's Marvel"
 	)
-	image_url: str = Field(
-		...,
-		description="Hero image url from external API"
-	)
+
 
 	
