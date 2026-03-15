@@ -101,8 +101,7 @@ class ExternalMarvelHeroApiClient(ExternalMarvelApiProtocol):
 		
 		logger.debug(
 			"Hero has been successfully retrieved from external API",
-			external_id=external_id,
-			hero_data=data
+			external_id=external_id
 		)
 
 		return self.mapper.to_dto(data)

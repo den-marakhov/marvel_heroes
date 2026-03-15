@@ -27,7 +27,7 @@ class HeroResponseScheme(BaseModel):
 	)
 	external_img_url: str | None = Field(
 		default=None, description="Image url from external API"
-	),
+	)
 	uploaded_img_url: str | None = Field(
 		default=None ,description="Uploaded image path"
 	)
@@ -41,27 +41,27 @@ class HeroResponseScheme(BaseModel):
 
 class ExternalHeroResponseScheme(BaseModel):
 
-		model_config=ConfigDict(
-			extra="forbid",
-			frozen=True
-		)
+	model_config=ConfigDict(
+		extra="forbid",
+		frozen=True
+	)
 
-		external_id: int = Field(..., description="Hero id from external API")
-		name: str = Field(
-			...,
-			description="Hero name from external API (should be the same as we have in db)"
-			)
-		full_name: str = Field(
-			...,
-			description="Hero full name. For example: Peter Parker, Miles Morales etc."
-		)
-		publisher: str = Field(
-			...,
-			description="Comics publisher brand. In our case it's Marvel"
-		)
-		image_url: str = Field(
-			...,
-			description="Hero image url from external API"
-		)
+	external_id: int = Field(..., description="Hero id from external API")
+	name: str = Field(
+		...,
+		description="Hero name from external API (should be the same as we have in db)"
+	)
+	full_name: str = Field(
+		...,
+		description="Hero full name. For example: Peter Parker, Miles Morales etc."
+	)
+	publisher: str = Field(
+		...,
+		description="Comics publisher brand. In our case it's Marvel"
+	)
+	image_url: str = Field(
+		...,
+		description="Hero image url from external API"
+	)
 
 	

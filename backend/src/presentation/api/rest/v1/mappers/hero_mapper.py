@@ -42,7 +42,7 @@ class HeroPresentationMapper:
 			self, dto: ExternalAPIHeroDTO
 	) -> ExternalHeroResponseScheme:
 		
-		return ExternalAPIHeroDTO(
+		return ExternalHeroResponseScheme(
 			external_id=dto.external_id,
 			name=dto.name,
 			full_name=dto.full_name,
