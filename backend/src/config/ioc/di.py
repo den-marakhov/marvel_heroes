@@ -7,6 +7,7 @@ from src.config.ioc.providers import (
 	UnitOfWorkProvider,
 	MapperProvider,
 	CacheProvider,
+	ImageUploadServiceProvider,
 	UseCaseProvider,
 	HttpClientProvider
 )
@@ -19,6 +20,7 @@ def get_providers() -> list[Provider]:
 		UnitOfWorkProvider(),
 		MapperProvider(),
 		CacheProvider(),
+		ImageUploadServiceProvider(),
 		UseCaseProvider(),
 		HttpClientProvider()
 	]

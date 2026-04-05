@@ -1,12 +1,14 @@
 from uuid import UUID
 
 from dishka.integrations.fastapi import FromDishka, inject
-from fastapi import APIRouter, Path, Query, Body, status
+from fastapi import APIRouter, UploadFile, File, Path, Query, Body, status
 
+from src.application.usecases.repo.update_hero_in_repo import UpdateHeroInRepoUseCase
 from src.application.usecases.repo.save_hero_to_repo import ManualHeroCreationInRepoUseCase
 from src.application.usecases.repo.get_hero_by_id_from_repo import GetHeroFromRepoUseCase
 from src.application.usecases.repo.get_heroes_from_repo import GetHeroesFromRepoUseCase
 from src.application.usecases.repo.delete_hero_from_repo import DeleteHeroFromRepoUseCase
+from src.application.usecases.upload_image_usecase import UploadHeroImageUseCase
 
 from src.application.usecases.external_api.fetch_heroes_from_external_api import FetchHeroesFromExternalAPIUseCase
 from src.application.usecases.external_api.enrich_hero_usecase import EnrichHeroUseCase
@@ -18,6 +20,8 @@ from src.presentation.api.rest.v1.schemes.requests import (
 	HeroRequestBodyScheme, EnrichHeroBodyScheme
 )
 from src.presentation.api.rest.v1.mappers.hero_mapper import HeroPresentationMapper
+
+from src.services.image_service import ImageUploadService
 
 router = APIRouter(prefix="/v1/heroes", tags=["Heroes"])
 
@@ -126,6 +130,35 @@ async def enrich_hero_data_from_external_api(
 ):
 	hero_dto = await usecase(hero_id=hero_id, external_id=body.external_id)
 	return presentation_mapper.to_response_scheme(hero_dto)
+
+@router.post(
+		"/{hero_id}/image-upload",
+		summary="Upload image for hero card",
+		responses={
+        201: {"description": "Image uploaded successfully"},
+        400: {"description": "Invalid image"},
+        404: {"description": "Hero not found"},
+        500: {"description": "Internal server error"},
+    }
+)
+@inject
+async def upload_hero_image(
+	image_service: FromDishka[ImageUploadService],
+	usecase: FromDishka[UploadHeroImageUseCase],
+	presentation_mapper: FromDishka[HeroPresentationMapper],
+	hero_id: UUID = Path(..., description="Hero unique id"),
+	file: UploadFile = File(..., description="Hero image to upload")
+):
+	image_url = await image_service.upload_image(file=file, hero_id=hero_id)
+	
+	update_hero_dto = presentation_mapper.to_update_hero_dto(
+	uploaded_img_url=image_url
+	)
+	await usecase(hero_id=hero_id, update_dto=update_hero_dto)
+
+	return {
+		"hero_img_url": image_url
+	}
 
 @router.delete(
 	"/{hero_id}",
