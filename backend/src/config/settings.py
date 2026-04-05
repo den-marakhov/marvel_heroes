@@ -5,6 +5,7 @@ from src.config.app import AppSettings
 from src.config.database import DatabaseSettings
 from src.config.redis import RedisSettings
 from src.config.external_api import ExternalAPISettings
+from src.config.image_service_settings import ImageServiceSettings
 
 
 class Settings(BaseSettings):
@@ -13,6 +14,9 @@ class Settings(BaseSettings):
 	database: DatabaseSettings = Field(default_factory=DatabaseSettings)
 	redis: RedisSettings = Field(default_factory=RedisSettings)
 	external_api: ExternalAPISettings = Field(default_factory=ExternalAPISettings)
+	image_service_settings: ImageServiceSettings = Field(
+		default_factory=ImageServiceSettings
+	)
 
 
 	@property
@@ -26,6 +30,10 @@ class Settings(BaseSettings):
 	@property
 	def log_level(self) -> str:
 		return self.app.log_level
+	
+	@property
+	def base_url(self) -> str:
+		return self.app.base_url
 	
 	@property
 	def debug(self) -> bool:
@@ -54,3 +62,27 @@ class Settings(BaseSettings):
 	@property
 	def http_timeout(self) -> float:
 		return self.external_api.http_timeout
+	
+	@property
+	def max_img_width(self) -> int:
+		return self.image_service_settings.img_width
+	
+	@property
+	def max_img_height(self) -> int:
+		return self.image_service_settings.img_height
+	
+	@property
+	def max_file_size(self) -> int:
+		return self.image_service_settings.max_file_size
+	
+	@property
+	def temp_dir(self) -> str:
+		return self.image_service_settings.temp_dir
+	
+	@property
+	def upload_dir(self) -> str:
+		return self.image_service_settings.upload_dir
+	
+	@property
+	def allowed_mimes(self) -> list[str]:
+		return self.image_service_settings.allowed_types

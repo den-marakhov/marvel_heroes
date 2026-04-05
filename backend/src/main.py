@@ -2,9 +2,12 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 import structlog
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import setup_dishka
 
@@ -55,6 +58,14 @@ def create_app() -> FastAPI:
 	setup_exception_handlers(app)
 
 	app.include_router(api_v1_router, prefix="/api")
+
+	Path("uploads/heroes").mkdir(parents=True, exist_ok=True)
+	
+	app.mount(
+		"/uploads",
+		StaticFiles(directory="uploads"),
+		name="uploads"
+	)
 
 	return app
 

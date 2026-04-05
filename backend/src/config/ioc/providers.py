@@ -34,6 +34,7 @@ from src.application.usecases.cache.save_hero_to_cache import SaveHeroToCacheUse
 from src.application.usecases.cache.save_heroes_to_cache import SaveHeroesToCacheUseCase
 from src.application.usecases.external_api.enrich_hero_usecase import EnrichHeroUseCase
 from src.application.usecases.external_api.fetch_heroes_from_external_api import FetchHeroesFromExternalAPIUseCase
+from src.application.usecases.upload_image_usecase import UploadHeroImageUseCase
 
 from src.infrastructures.db.mappers.hero_db_mapper import HeroDBMapper
 from src.infrastructures.mappers.hero import HeroSerializationMapper
@@ -44,6 +45,8 @@ from src.infrastructures.http.mappers.external_hero_mapper import ExternalHeroAP
 from src.infrastructures.http.clients import ExternalMarvelHeroApiClient
 
 from src.presentation.api.rest.v1.mappers.hero_mapper import HeroPresentationMapper
+
+from src.services.image_service import ImageUploadService
 
 
 class SettingsProvider(Provider):
@@ -147,8 +150,11 @@ class MapperProvider(Provider):
 		return HeroDBMapper()
 	
 	@provide(scope=Scope.REQUEST)
-	def get_presentation_mapper(self) -> HeroPresentationMapper:
-		return HeroPresentationMapper()
+	def get_presentation_mapper(
+		self,
+		settings: Settings
+		) -> HeroPresentationMapper:
+		return HeroPresentationMapper(settings.base_url)
 	
 	@provide(scope=Scope.REQUEST)
 	def get_external_api_hero_mapper(self) -> ExternalHeroAPIMapper:
@@ -182,6 +188,21 @@ class CacheProvider(Provider):
 		finally:
 				await cache_service.close()
 
+class ImageUploadServiceProvider(Provider):
+
+	@provide(scope=Scope.APP)
+	def get_image_service(
+		self,
+		settings: Settings
+	) -> ImageUploadService:
+		return ImageUploadService(
+			upload_dir_path=settings.upload_dir,
+			temp_dir_path=settings.temp_dir,
+			max_file_size=settings.max_file_size,
+			allowed_mimes=settings.allowed_mimes,
+			max_width=settings.max_img_width,
+			max_height=settings.max_img_height
+		)
 
 class UseCaseProvider(Provider):
 	
@@ -323,5 +344,19 @@ class UseCaseProvider(Provider):
 		return EnrichHeroUseCase(
 			marvel_hero_api_client=api_client,
 			mapper=mapper,
+			update_hero_in_repo_usecase=update_hero_in_repo_usecase
+		)
+	
+	@provide(scope=Scope.REQUEST)
+	def get_upload_image_usecase(
+		self,
+		image_service: ImageUploadService,
+		get_hero_from_repo_usecase: GetHeroFromRepoUseCase,
+		update_hero_in_repo_usecase: UpdateHeroInRepoUseCase
+
+	) -> UploadHeroImageUseCase:
+		return UploadHeroImageUseCase(
+			image_service=image_service,
+			get_hero_from_repo_usecase=get_hero_from_repo_usecase,
 			update_hero_in_repo_usecase=update_hero_in_repo_usecase
 		)

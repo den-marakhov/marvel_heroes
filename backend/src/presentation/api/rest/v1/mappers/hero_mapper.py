@@ -6,7 +6,8 @@ from src.application.dtos.hero import(
 	HeroDTO,
 	ManualCreateHeroDTO,
 	HeroNameDTO,
-	ExternalAPIHeroDTO
+	ExternalAPIHeroDTO,
+	UpdateHeroDTO
 	)
 
 
@@ -23,6 +24,8 @@ from src.presentation.api.rest.v1.schemes.requests import (
 @final
 @dataclass(frozen=True, slots=True)
 class HeroPresentationMapper:
+	
+	base_url: str
 
 	def to_response_scheme(self, dto: HeroDTO) -> HeroResponseScheme:
 
@@ -32,7 +35,11 @@ class HeroPresentationMapper:
 			description=dto.description,
 			full_name=dto.full_name,
 			publisher=dto.publisher,
-			uploaded_img_url=dto.uploaded_img_url,
+			uploaded_img_url=(
+				f"{self.base_url}{dto.uploaded_img_url}"
+				if dto.uploaded_img_url is not None
+				else None
+			),
 			created_at=dto.created_at,
 			updated_at=dto.updated_at,
 		)
@@ -57,5 +64,8 @@ class HeroPresentationMapper:
 			name=HeroNameDTO(value=scheme.name),
 			description=scheme.description
 		)
+	
+	def to_update_hero_dto(self, **kwargs) -> UpdateHeroDTO:
+		return UpdateHeroDTO(**kwargs)
 
 	

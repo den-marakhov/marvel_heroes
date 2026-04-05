@@ -10,6 +10,11 @@ from src.domain.exceptions import (
 	InvalidHeroNameException,
 )
 
+from src.services.exceptions import (
+	ImageValidationError,
+	ImageProcessingError
+)
+
 def setup_exception_handlers(app: FastAPI) -> None:
 	@app.exception_handler(HeroNotFoundError)
 	async def hero_not_found_exception_handler(
@@ -39,4 +44,24 @@ def setup_exception_handlers(app: FastAPI) -> None:
 		return JSONResponse(
 			status_code=status.HTTP_400_BAD_REQUEST,
 			content={"message": str(exc)}
+		)
+	
+	@app.exception_handler(ImageValidationError)
+	async def get_image_validation_exception_handler(
+		request: Request,
+		exc: ImageValidationError
+	) -> JSONResponse:
+		return JSONResponse(
+			status_code=status.HTTP_400_BAD_REQUEST,
+			content={"message": str(exc)}
+		)
+	
+	@app.exception_handler(ImageProcessingError)
+	async def get_image_processing_exception_handler(
+		request: Request,
+		exc: ImageProcessingError
+	) -> JSONResponse:
+		return JSONResponse(
+			status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+			content={"message": "Failed to process image"}
 		)
