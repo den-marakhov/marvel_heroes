@@ -9,7 +9,7 @@ from src.domain.exceptions import (
 )
 
 @final
-@dataclass(kw_only=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class HeroEntity:
 	
 	hero_id: UUID

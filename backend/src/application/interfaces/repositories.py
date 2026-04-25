@@ -25,6 +25,14 @@ class HeroRepositoryProtocol(Protocol):
 		...
 
 	@abstractmethod
+	async def update_hero(
+			self,
+			hero_id: UUID,
+			hero_entity: HeroEntity
+	)	-> None:
+		...
+
+	@abstractmethod
 	async def delete_hero(
 		self, hero_id: UUID
 	) -> None:

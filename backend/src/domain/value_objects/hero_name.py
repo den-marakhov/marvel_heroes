@@ -1,32 +1,18 @@
 from dataclasses import dataclass
-from typing import final, ClassVar
+from typing import final
 
 from src.domain.exceptions import InvalidHeroNameException
 
+from src.domain.constants import ALLOWED_NAMES
 
 @final
 @dataclass(frozen=True, kw_only=True, slots=True)
 class HeroName:
 
-	_allowed_values: ClassVar[set[str]] = {
-		"Spider-Man",
-		"Captain America",
-		"Iron Man",
-		"Hulk",
-		"Thor",
-		"Black widow",
-		"Black panther",
-		"Ant Man",
-		"Hawk eye",
-		"Wanda",
-		"Vision",
-		"Wolverine"
-	}
-
 	value: str
 
 	def __post_init__(self) -> None:
-		if self.value not in self._allowed_values:
+		if self.value not in ALLOWED_NAMES:
 			raise InvalidHeroNameException(f"Invalid hero name: {self.value}")
 		
 		if len(self.value) < 2 or len(self.value) > 100:
