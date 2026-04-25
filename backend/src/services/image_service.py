@@ -9,7 +9,7 @@ from pathlib import Path
 from uuid import UUID, uuid4
 
 from fastapi import UploadFile
-from PIL import Image, ImageOps, ImageFilter, UnidentifiedImageError
+from PIL import Image, ImageFilter, UnidentifiedImageError
 
 from src.services.utils import transform_max_size_in_mb_to_readable_format
 from src.services.exceptions import ImageProcessingError, ImageValidationError
@@ -32,7 +32,7 @@ class ImageUploadService:
 			max_mb = transform_max_size_in_mb_to_readable_format(self.max_file_size)
 
 			raise ImageValidationError(
-				f"{file.filename} exceeds max file size: {max_mb}"
+				f"{file.filename} exceeds max file size: {max_mb}MB"
 			)
 		
 		first_chunk = file.file.read(2048)
