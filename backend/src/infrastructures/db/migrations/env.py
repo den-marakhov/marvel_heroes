@@ -1,17 +1,14 @@
 import asyncio
-import os
 from logging.config import fileConfig
+import os
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from alembic import context
-
-from src.infrastructures.db.models.base import Base
-from src.infrastructures.db.models.hero import HeroModel
-
 from src.config.base import Settings
+from src.infrastructures.db.models.base import Base
 
 settings = Settings()
 
@@ -30,12 +27,14 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 def get_url() -> str:
     return os.getenv("DATABASE_URL", settings.database_url)
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -81,7 +80,6 @@ async def run_async_migrations() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-   
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
