@@ -1,71 +1,56 @@
-from typing import final
 from dataclasses import dataclass
+from typing import final
 
-
-from src.application.dtos.hero import(
-	HeroDTO,
-	ManualCreateHeroDTO,
-	HeroNameDTO,
-	ExternalAPIHeroDTO,
-	UpdateHeroDTO
-	)
-
-
-
-from src.presentation.api.rest.v1.schemes.responses import (
-	HeroResponseScheme,
-	ExternalHeroResponseScheme
-	)
-
-from src.presentation.api.rest.v1.schemes.requests import (
-	HeroRequestBodyScheme,
+from src.application.dtos.hero import (
+    ExternalAPIHeroDTO,
+    HeroDTO,
+    HeroNameDTO,
+    ManualCreateHeroDTO,
+    UpdateHeroDTO,
 )
+from src.presentation.api.rest.v1.schemes.requests import (
+    HeroRequestBodyScheme,
+)
+from src.presentation.api.rest.v1.schemes.responses import (
+    ExternalHeroResponseScheme,
+    HeroResponseScheme,
+)
+
 
 @final
 @dataclass(frozen=True, slots=True)
 class HeroPresentationMapper:
-	
-	base_url: str
+    def to_response_scheme(self, dto: HeroDTO) -> HeroResponseScheme:
 
-	def to_response_scheme(self, dto: HeroDTO) -> HeroResponseScheme:
+        return HeroResponseScheme(
+            hero_id=dto.hero_id,
+            name=dto.name.value,
+            description=dto.description,
+            full_name=dto.full_name,
+            publisher=dto.publisher,
+            uploaded_img_url=dto.uploaded_img_url,
+            created_at=dto.created_at,
+            updated_at=dto.updated_at,
+        )
 
-		return HeroResponseScheme(
-			hero_id=dto.hero_id,
-			name=dto.name.value,
-			description=dto.description,
-			full_name=dto.full_name,
-			publisher=dto.publisher,
-			uploaded_img_url=(
-				f"{self.base_url}{dto.uploaded_img_url}"
-				if dto.uploaded_img_url is not None
-				else None
-			),
-			created_at=dto.created_at,
-			updated_at=dto.updated_at,
-		)
-	
-	def to_external_api_hero_response_scheme(
-			self, dto: ExternalAPIHeroDTO
-	) -> ExternalHeroResponseScheme:
-		
-		return ExternalHeroResponseScheme(
-			external_id=dto.external_id,
-			name=dto.name,
-			full_name=dto.full_name,
-			publisher=dto.publisher,
-		)
-	
-	def to_manual_hero_create_dto(
-			self,
-			scheme:HeroRequestBodyScheme
-			) -> ManualCreateHeroDTO:
-		
-		return ManualCreateHeroDTO(
-			name=HeroNameDTO(value=scheme.name),
-			description=scheme.description
-		)
-	
-	def to_update_hero_dto(self, **kwargs) -> UpdateHeroDTO:
-		return UpdateHeroDTO(**kwargs)
+    def to_external_api_hero_response_scheme(
+        self, dto: ExternalAPIHeroDTO
+    ) -> ExternalHeroResponseScheme:
 
-	
+        return ExternalHeroResponseScheme(
+            external_id=dto.external_id,
+            name=dto.name,
+            full_name=dto.full_name,
+            publisher=dto.publisher,
+        )
+
+    def to_manual_hero_create_dto(
+        self, scheme: HeroRequestBodyScheme
+    ) -> ManualCreateHeroDTO:
+
+        return ManualCreateHeroDTO(
+            name=HeroNameDTO(value=scheme.name), description=scheme.description
+        )
+
+    def to_update_hero_dto(self, **kwargs) -> UpdateHeroDTO:
+        return UpdateHeroDTO(**kwargs)
