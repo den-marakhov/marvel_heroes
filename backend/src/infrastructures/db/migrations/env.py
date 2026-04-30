@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from src.config.base import Settings
 from src.infrastructures.db.models.base import Base
+from src.infrastructures.db.models.hero import HeroModel
 
 settings = Settings()
 
