@@ -30,10 +30,6 @@ class Settings(BaseSettings):
         return self.app.log_level
 
     @property
-    def base_url(self) -> str:
-        return self.app.base_url
-
-    @property
     def debug(self) -> bool:
         return self.app.debug
 

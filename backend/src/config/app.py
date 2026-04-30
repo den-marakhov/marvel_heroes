@@ -10,7 +10,6 @@ class AppSettings(BaseSettings):
     environment: Literal["local", "dev", "development", "prod"] = "local"
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     debug: bool = Field(False, alias="DEBUG")
-    base_url: str = Field(..., alias="BASE_URL")
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
