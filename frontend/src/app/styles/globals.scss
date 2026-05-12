@@ -1,0 +1,53 @@
+html {
+	overflow-y: scroll;
+	scrollbar-color: red #111;
+	scrollbar-gutter: stable;
+	scrollbar-width: thin;
+}
+
+body {
+	font-family: var(--font-family-base);
+	color: var(--color-dark-2);
+	background-color: var(--color-white);
+}
+
+#root {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+main {
+	flex-grow: 1;
+}
+
+h1,
+.h1 {
+	@include fluid-text(58, 28);
+
+	color: var(--color-white);
+	font-family: var(--font-family-title);
+	font-weight: 700;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+label,
+svg * {
+	transition-duration: var(--transition-duration);
+}
+
+a {
+	color: inherit;
+
+	@include hover {
+		color: var(--color-red-45);
+	}
+
+	&[class] {
+		text-decoration: none;
+	}
+}
