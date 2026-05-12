@@ -1,0 +1,24 @@
+:root {
+	--color-white: #fff;
+	--color-black: #000000;
+
+	--color-red-1: #e62429;
+	--color-red-2: #ca2020;
+
+	--color-dark-1: #202020;
+	--color-dark-2: #151515;
+	--color-dark-3: #393939;
+
+	--font-family-base: 'RobotoCondensed', sans-serif;
+	--font-family-title: 'Oswald', sans-serif;
+
+	--container-width: #{fluid-to-laptop(
+			$container-desktop-width,
+			$container-laptop-width
+		)};
+
+	--container-padding-x: 16px;
+
+	--transition-duration: 0.2s;
+	--transition-duration-longer: 0.4s;
+}
