@@ -1,0 +1,6 @@
+.section {
+	display: grid;
+	row-gap: 24px;
+	padding-top: var(--section-padding-y-top);
+	padding-bottom: var(--section-padding-y-bottom);
+}

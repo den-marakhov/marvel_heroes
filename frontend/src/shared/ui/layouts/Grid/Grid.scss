@@ -1,0 +1,19 @@
+.grid {
+	--gridColumns: 1;
+
+	display: grid;
+	grid-template-columns: repeat(var(--gridColumns), 1fr);
+	gap: 20px;
+
+	&--6 {
+		--gridColumns: 6;
+
+		@include mobile {
+			--gridColumns: 3;
+		}
+
+		@include mobile-s {
+			--gridColumns: 2;
+		}
+	}
+}
