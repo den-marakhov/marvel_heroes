@@ -3,6 +3,8 @@ from uuid import UUID
 from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import APIRouter, Body, File, Path, Query, UploadFile, status
 
+from src.domain.constants import ALLOWED_NAMES
+
 from src.application.usecases.external_api.enrich_hero_usecase import EnrichHeroUseCase
 from src.application.usecases.external_api.fetch_heroes_from_external_api import (
     FetchHeroesFromExternalAPIUseCase,
@@ -26,11 +28,19 @@ from src.presentation.api.rest.v1.schemes.requests import (
 from src.presentation.api.rest.v1.schemes.responses import (
     ExternalHeroResponseScheme,
     HeroResponseScheme,
+    ValidHeroNamesScheme
 )
 from src.services.interfaces import ImageUploadServiceProtocol
 
 router = APIRouter(prefix="/v1/heroes", tags=["Heroes"])
 
+@router.get(
+        "/valid-names",
+        response_model=ValidHeroNamesScheme,
+        summary="heroes valid names list"
+)
+async def get_valid_heroes_names():
+    return {"heroes_names": ALLOWED_NAMES}
 
 @router.get(
     "/search",

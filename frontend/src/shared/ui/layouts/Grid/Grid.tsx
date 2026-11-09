@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import type { ReactElement } from 'react';
+import { Children, type ReactNode } from 'react';
 import './Grid.scss';
 
 interface IGridProps {
 	columns?: number;
-	children: ReactElement[];
+	children: ReactNode;
 }
 
 const Grid = (props: IGridProps) => {
@@ -16,13 +16,9 @@ const Grid = (props: IGridProps) => {
 				[`grid--${columns}`]: columns > 1,
 			})}
 		>
-			{children?.map((child, index) => {
-				return (
-					<li key={index} className='grid__item'>
-						{child}
-					</li>
-				);
-			})}
+			{Children.map(children, child => (
+				<li className='grid__item'>{child}</li>
+			))}
 		</ul>
 	);
 };

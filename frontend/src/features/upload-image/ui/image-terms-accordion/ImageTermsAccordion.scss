@@ -1,0 +1,8 @@
+.image-terms {
+	&__item {
+		padding-left: 4px;
+		&::marker {
+			content: '-';
+		}
+	}
+}

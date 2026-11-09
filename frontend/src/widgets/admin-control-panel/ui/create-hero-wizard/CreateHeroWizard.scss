@@ -1,0 +1,6 @@
+.create-hero-wizard {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	row-gap: 16px;
+	height: 100%;
+}

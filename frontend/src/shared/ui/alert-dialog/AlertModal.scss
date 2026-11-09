@@ -1,0 +1,34 @@
+.alert-dialog {
+	&__content {
+		@include fix-center;
+
+		display: flex;
+		flex-direction: column;
+		row-gap: 24px;
+		padding: 20px;
+		max-width: 600px;
+		border: var(--border);
+		border-radius: var(--border-radius-xs);
+		z-index: 15;
+		background-color: var(--color-white);
+		box-shadow: var(--box-shadow);
+	}
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+	}
+
+	&__body {
+		@include flex-center;
+
+		min-height: 44px;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		column-gap: 16px;
+	}
+}

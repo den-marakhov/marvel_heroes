@@ -1,0 +1,83 @@
+.dialog {
+	&__overlay {
+		position: fixed;
+		inset: 0;
+		background-color: rgba(0, 0, 0, 0.85);
+		z-index: 5;
+	}
+
+	&__content {
+		@include fix-center;
+
+		display: flex;
+		flex-direction: column;
+		row-gap: 24px;
+		padding-top: 56px;
+		padding-inline: fluid-to-laptop(72, 32);
+		padding-bottom: fluid-to-laptop(56, 24);
+		width: 100%;
+		height: 100%;
+		max-width: fluid-to-laptop(1200, 820);
+		max-height: 50vh;
+		min-height: 500px;
+		background-color: var(--color-white);
+		outline: none !important;
+		border-radius: var(--border-radius-s);
+		overflow: hidden;
+		z-index: 6;
+
+		@include mobile {
+			max-width: 100%;
+			max-height: 100%;
+			border-radius: unset;
+		}
+	}
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+	}
+
+	&__description {
+		color: var(--color-dark-4);
+	}
+
+	&__body {
+		display: flex;
+		padding-inline: 5px;
+		flex-direction: column;
+		row-gap: 24px;
+		flex-grow: 1;
+		overflow-y: auto;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: end;
+		row-gap: 24px;
+		column-gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	&__close-button {
+		@include square(32px);
+		@include flex-center;
+
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		border-radius: 50% !important;
+		outline: none;
+		border: none;
+		padding: 6px;
+
+		@include hover {
+			background-color: var(--color-grey-3);
+		}
+
+		&-svg {
+			fill: var(--color-dark-4);
+		}
+	}
+}

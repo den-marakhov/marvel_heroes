@@ -1,0 +1,76 @@
+.upload-hero-image {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	&__recommendations-banner {
+		padding: 24px;
+		background-color: #fffae8;
+		border-radius: 16px;
+	}
+
+	&__body {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 16px;
+
+		@include mobile {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	&__error-block {
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		padding: 10px 15px 10px 20px;
+		background-color: var(--color-blue-1);
+		border-radius: var(--border-radius-xxs);
+		min-height: 40px;
+		cursor: not-allowed;
+	}
+
+	&__error-text {
+		color: var(--color-white);
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -10px;
+			width: 5px;
+			height: 100%;
+			background-color: var(--color-red-1);
+		}
+	}
+
+	&__actions {
+		margin-top: auto;
+		display: flex;
+		gap: 10px;
+
+		@include mobile-s {
+			justify-content: space-between;
+		}
+	}
+
+	&__button {
+		max-width: 150px;
+		min-width: 100px;
+
+		@include mobile-s {
+			width: 50%;
+		}
+	}
+
+	&__left-col {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	&__right-col {
+		@include flex-center;
+	}
+}

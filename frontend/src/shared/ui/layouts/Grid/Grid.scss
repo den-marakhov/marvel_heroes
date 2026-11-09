@@ -2,8 +2,16 @@
 	--gridColumns: 1;
 
 	display: grid;
-	grid-template-columns: repeat(var(--gridColumns), 1fr);
+	grid-template-columns: repeat(var(--gridColumns), minmax(0, 1fr));
 	gap: 20px;
+
+	&--2 {
+		--gridColumns: 2;
+
+		@include mobile {
+			--gridColumns: 1;
+		}
+	}
 
 	&--6 {
 		--gridColumns: 6;

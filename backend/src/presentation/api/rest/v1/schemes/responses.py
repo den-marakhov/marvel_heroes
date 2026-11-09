@@ -4,6 +4,13 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 
 
+class ValidHeroNamesScheme(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    heroes_names: list[str] = Field(
+        ..., description="A list of hero valid names that can be created"
+    )
+
 class HeroResponseScheme(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid", from_attributes=True)
 

@@ -1,13 +1,15 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
+import { NetworkStatusNotifier, queryClient } from './providers';
 import Router from './routing';
 import './styles';
-
-const queryClient = new QueryClient();
 
 const App = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Router />
+			<NetworkStatusNotifier />
+			<Toaster position='bottom-right' richColors closeButton />
 		</QueryClientProvider>
 	);
 };

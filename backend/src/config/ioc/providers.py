@@ -279,10 +279,11 @@ class UseCaseProvider(Provider):
     def get_delete_hero_from_repo_usecase(
         self,
         uow: UnitOfWorkProtocol,
+        image_service: ImageUploadServiceProtocol,
         invalidate_hero_cache_usecase: InvalidateHeroCacheUseCase,
     ) -> DeleteHeroFromRepoUseCase:
         return DeleteHeroFromRepoUseCase(
-            uow=uow, invalidate_cache_usecase=invalidate_hero_cache_usecase
+            uow=uow, invalidate_cache_usecase=invalidate_hero_cache_usecase, image_service=image_service
         )
 
     @provide(scope=Scope.REQUEST)

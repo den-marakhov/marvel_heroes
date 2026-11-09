@@ -1,0 +1,1 @@
+export { useAvailableHeroNames } from './useAvailableHeroNames';

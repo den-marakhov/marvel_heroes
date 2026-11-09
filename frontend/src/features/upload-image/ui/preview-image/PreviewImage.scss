@@ -1,0 +1,96 @@
+.preview-image {
+	--deletePreviewButtonOpacity: 0;
+	--loaderOverlayBackgroundColor: rgba(5, 6, 6, 0.55);
+
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	&__title {
+		color: var(--color-dark-2);
+	}
+
+	&__preview-wrapper {
+		position: relative;
+		background-color: rgba(5, 6, 6, 0.066);
+		width: fluid-to-laptop(350, 250);
+		height: fluid-to-laptop(375, 275);
+		border-radius: 8px;
+		overflow: hidden;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 100;
+			border-radius: var(--border-radius-xxs);
+			pointer-events: none;
+		}
+
+		@include hover {
+			&:has(img) {
+				--deletePreviewButtonOpacity: 1;
+				&:before {
+					border: 4px solid var(--color-white);
+				}
+
+				&:after {
+					border: 2px solid var(--neutral-1);
+				}
+			}
+		}
+	}
+
+	&:has(img):focus-within {
+		--deletePreviewButtonOpacity: 1;
+
+		.preview-image__preview-wrapper:before {
+			border: 4px solid var(--color-white);
+		}
+
+		.preview-image__preview-wrapper:after {
+			border: 2px solid var(--neutral-1);
+		}
+	}
+
+	&__delete-button {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		width: 26px !important;
+		height: 26px !important;
+		transition: all 0.3s ease-in-out;
+		opacity: var(--deletePreviewButtonOpacity);
+
+		.icon {
+			--iconSize: 15px;
+		}
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+		aspect-ratio: var(--aspectRatio);
+	}
+
+	&__loader-overlay {
+		@include flex-center;
+
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		flex-direction: column;
+		row-gap: 8px;
+		background-color: var(--loaderOverlayBackgroundColor);
+	}
+
+	&__loader-progress {
+		color: var(--color-white);
+	}
+}
