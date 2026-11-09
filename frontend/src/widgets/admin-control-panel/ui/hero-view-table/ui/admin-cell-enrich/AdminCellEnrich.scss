@@ -1,0 +1,13 @@
+.admin-cell-enrich {
+	border: none;
+	background-color: transparent;
+	padding: 20px 15px;
+
+	@include hover {
+		background-color: var(--color-grey-6);
+
+		.admin-cell-enrich__label {
+			color: var(--color-red-1);
+		}
+	}
+}

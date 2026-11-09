@@ -4,15 +4,32 @@
 
 	--color-red-1: #e62429;
 	--color-red-2: #ca2020;
+	--color-red-3: #f95252;
 
 	--color-dark-1: #202020;
 	--color-dark-2: #151515;
 	--color-dark-3: #393939;
+	--color-dark-4: #252526;
 
 	--color-grey-1: #caccd8;
 	--color-grey-2: #bbb;
+	--color-grey-3: #ccced3;
+	--color-grey-4: #0000330f;
+	--color-grey-5: #00002d17;
+	--color-grey-6: #f0f2f5;
+	--color-grey-7: #e9ebf0;
 
 	--color-blue-1: #1e2029;
+
+	--text-1: rgba(0, 26, 51, 0.6);
+
+	--color-label: #070707;
+
+	--neutral-1: rgba(94, 118, 139, 0.45);
+	--neutral-2: #f5f7fa;
+	--neutral-3: rgba(171, 188, 213, 0.11);
+
+	--negative-1: rgba(255, 105, 55, 0.098);
 
 	--font-family-base: 'RobotoCondensed', sans-serif;
 	--font-family-title: 'Oswald', sans-serif;
@@ -22,6 +39,13 @@
 			$container-laptop-width
 		)};
 
+	--border: 1px solid var(--color-grey-3);
+
+	--border-radius-xxs: 8px;
+	--border-radius-xs: 10px;
+	--border-radius-s: 25px;
+	--border-radius-m: 28px;
+
 	--container-padding-x: 16px;
 
 	--section-padding-y-top: 24px;
@@ -29,4 +53,10 @@
 
 	--transition-duration: 0.2s;
 	--transition-duration-longer: 0.4s;
+
+	--box-shadow:
+		0 1px 1px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.08),
+		0 16px 32px rgba(0, 0, 0, 0.12);
+
+	--aspectRatio: 10 / 11;
 }

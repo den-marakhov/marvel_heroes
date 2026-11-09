@@ -39,6 +39,13 @@
 	inset: 0;
 }
 
+@mixin fix-center {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+}
+
 @mixin square($size) {
 	width: $size;
 	height: $size;
@@ -57,7 +64,33 @@
 	overflow: hidden !important;
 }
 
+@mixin focus-visible {
+	outline: 2px solid var(--color-red-1);
+	transition-duration: 0s !important;
+}
+
 @mixin disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
+}
+
+@mixin text-clamp($lines) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+
+@mixin form-field-is-invalid {
+	background-image: linear-gradient(to bottom, transparent, transparent calc(100% - 2px), var(--color-red-3) calc(100% - 2px), var(--color-red-3)),
+	linear-gradient(to bottom, var(--color-grey-7), var(--color-grey-7));
+	background-size: 100% 100%, 100% 100%;
+}
+
+@mixin from-field-focus {
+	background-image: linear-gradient(to bottom, var(--color-grey-7), var(--color-grey-7) calc(100% - 2px), var(--color-dark-4) calc(100% - 2px), var(--color-dark-4));
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: bottom center;
 }

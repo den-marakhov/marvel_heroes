@@ -1,0 +1,51 @@
+.field {
+	position: relative;
+
+
+	&__label {
+		position: absolute;
+		top: 15px;
+		left: 15px;
+		font-weight: 400;
+		color: var(--color-dark-4);
+		transition: var(--transition-duration);
+		pointer-events: none;
+	}
+
+	&__control {
+		width: 100%;
+		color: var(--color-dark-6);
+		padding: fluid-to-laptop(16, 12);
+    height: fluid-to-laptop(59, 45);
+		background-color: var(--color-grey-7);
+		border-radius: var(--border-radius-xs);
+		outline: none;
+		border: none;
+
+		&:focus-visible {
+			outline: none !important;
+		}
+
+		&:focus {
+			@include from-field-focus;
+		}
+	
+		&.is-invalid {
+			@include form-field-is-invalid;
+		}
+
+		&:focus ~ .field__label,
+		&:not(:placeholder-shown) ~ .field__label {
+
+			transform: scale(0.8) translateY(-15px) translateX(-10px);
+			color: rgba(37,37,38, .65);
+		}
+	}
+
+}
+
+textarea.field__control {
+	resize: vertical;
+	min-height: fluid(90, 60);
+	padding-block: fluid-to-laptop(20, 16);
+}

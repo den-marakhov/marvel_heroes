@@ -8,7 +8,5 @@ ALLOWED_NAMES = [
     "Black Panther",
     "Ant-Man",
     "Hawkeye",
-    "Scarlet Witch",
-    "Vision",
     "Wolverine",
 ]

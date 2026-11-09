@@ -3,6 +3,10 @@ html {
 	scrollbar-color: red #111;
 	scrollbar-gutter: stable;
 	scrollbar-width: thin;
+
+	&:has([data-state='open']) {
+		overflow: hidden;
+	}
 }
 
 body {
@@ -67,4 +71,8 @@ a {
 	&[class] {
 		text-decoration: none;
 	}
+}
+
+:focus-visible {
+	@include focus-visible;
 }

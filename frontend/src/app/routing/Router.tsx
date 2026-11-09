@@ -1,11 +1,12 @@
-import HomePage from '@/pages/HomePage';
-import { Layout } from '@/shared/ui/layouts';
+import { HomePage } from '@/pages/home-page';
+
 import { createBrowserRouter, RouterProvider } from 'react-router';
+import MainAppLayout from '../layouts';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		Component: Layout,
+		Component: MainAppLayout,
 		children: [{ index: true, Component: HomePage }],
 	},
 ]);

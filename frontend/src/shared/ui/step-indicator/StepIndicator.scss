@@ -1,0 +1,46 @@
+.step-indicator {
+	--inactiveBackgroundColor: rgba(149, 166, 182, 0.17);
+	--inactiveLabelColor: #768695;
+
+	--activeBackgroundColor: #070707;
+	--activeNumberColor: #f8fafd;
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: nowrap;
+	list-style: none;
+	gap: 24px;
+	counter-reset: step-counter;
+
+	&__item {
+		display: flex;
+		align-items: center;
+		column-gap: 8px;
+		counter-increment: step-counter;
+		color: var(--inactiveLabelColor);
+		cursor: not-allowed;
+		user-select: none;
+
+		&::before {
+			@include flex-center(true);
+			@include square(32px);
+
+			content: counter(step-counter);
+			background-color: var(--inactiveBackgroundColor);
+			border-radius: var(--border-radius-xs);
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		&.is-active {
+			color: var(--activeBackgroundColor);
+			cursor: default;
+
+			&::before {
+				background-color: var(--activeBackgroundColor);
+				color: var(--activeNumberColor);
+			}
+		}
+	}
+}

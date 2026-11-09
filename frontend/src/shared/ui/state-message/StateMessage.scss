@@ -1,0 +1,21 @@
+.state-message {
+	@include flex-center;
+
+	flex-direction: column;
+	row-gap: 16px;
+	padding: 40px 16px;
+	text-align: center;
+
+	&__image {
+		max-width: 160px;
+	}
+
+	&__description {
+		max-width: 480px;
+		color: var(--text-1);
+	}
+
+	&--error &__title {
+		color: var(--color-red-1);
+	}
+}
