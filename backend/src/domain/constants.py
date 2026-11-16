@@ -10,3 +10,6 @@ ALLOWED_NAMES = [
     "Hawkeye",
     "Wolverine",
 ]
+
+ADMIN_ROLE = "admin"
+ALLOWED_ROLES = [ADMIN_ROLE]

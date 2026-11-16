@@ -11,9 +11,9 @@ from sqlalchemy.ext.asyncio import (
 
 from src.application.dtos.hero import HeroDTO
 from src.application.interfaces.cache import CacheProtocol
-from src.application.mappers import DtoEntityMapperProtocol
+from src.application.interfaces.hero.mappers import HeroDtoEntityMapperProtocol
+from src.application.interfaces.hero.serialization import SerializationMapperProtocol
 from src.domain.entities.hero import HeroEntity
-from src.infrastructures.mappers.hero import SerializationMapperProtocol
 from tests.factories import HeroDTOFactory, HeroEntityFactory
 from tests.test_infrastructure.test_db.models.test_hero_model import TestBaseModel
 
@@ -55,7 +55,7 @@ def mock_uow() -> AsyncMock:
 
 @pytest.fixture
 def mock_mapper() -> MagicMock:
-    return MagicMock(spec=DtoEntityMapperProtocol)
+    return MagicMock(spec=HeroDtoEntityMapperProtocol)
 
 
 @pytest.fixture

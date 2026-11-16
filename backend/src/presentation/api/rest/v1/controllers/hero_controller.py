@@ -3,32 +3,36 @@ from uuid import UUID
 from dishka.integrations.fastapi import FromDishka, inject
 from fastapi import APIRouter, Body, File, Path, Query, UploadFile, status
 
-from src.domain.constants import ALLOWED_NAMES
-
-from src.application.usecases.external_api.enrich_hero_usecase import EnrichHeroUseCase
-from src.application.usecases.external_api.fetch_heroes_from_external_api import (
+from src.application.usecases.heroes.external_api.enrich_hero_usecase import (
+    EnrichHeroUseCase,
+)
+from src.application.usecases.heroes.external_api.fetch_heroes_from_external_api import (
     FetchHeroesFromExternalAPIUseCase,
 )
-from src.application.usecases.repo.delete_hero_from_repo import (
+from src.application.usecases.heroes.repo.delete_hero_from_repo import (
     DeleteHeroFromRepoUseCase,
 )
-from src.application.usecases.repo.get_hero_by_id_from_repo import (
+from src.application.usecases.heroes.repo.get_hero_by_id_from_repo import (
     GetHeroFromRepoUseCase,
 )
-from src.application.usecases.repo.get_heroes_from_repo import GetHeroesFromRepoUseCase
-from src.application.usecases.repo.save_hero_to_repo import (
+from src.application.usecases.heroes.repo.get_heroes_from_repo import (
+    GetHeroesFromRepoUseCase,
+)
+from src.application.usecases.heroes.repo.save_hero_to_repo import (
     ManualHeroCreationInRepoUseCase,
 )
-from src.application.usecases.upload_image_usecase import UploadHeroImageUseCase
+from src.application.usecases.heroes.upload_image_usecase import UploadHeroImageUseCase
+from src.domain.constants import ALLOWED_NAMES
+from src.presentation.api.rest.v1.dependencies.auth import CurrentAdmin
 from src.presentation.api.rest.v1.mappers.hero_mapper import HeroPresentationMapper
-from src.presentation.api.rest.v1.schemes.requests import (
+from src.presentation.api.rest.v1.schemes.heroes.requests import (
     EnrichHeroBodyScheme,
     HeroRequestBodyScheme,
 )
-from src.presentation.api.rest.v1.schemes.responses import (
+from src.presentation.api.rest.v1.schemes.heroes.responses import (
     ExternalHeroResponseScheme,
     HeroResponseScheme,
-    ValidHeroNamesScheme
+    ValidHeroNamesScheme,
 )
 from src.services.interfaces import ImageUploadServiceProtocol
 
@@ -46,11 +50,18 @@ async def get_valid_heroes_names():
     "/search",
     response_model=list[ExternalHeroResponseScheme],
     summary="search heroes in external api by hero's name",
+    responses={
+        200: {"description": "Heroes retrieved successfully"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Admin role required"},
+        500: {"description": "Internal server error"},
+    },
 )
 @inject
 async def get_heroes_from_external_api(
     usecase: FromDishka[FetchHeroesFromExternalAPIUseCase],
     presentation_mapper: FromDishka[HeroPresentationMapper],
+    _admin: CurrentAdmin,
     name: str = Query(..., description="Hero name for searching in external api"),
 ):
     heroes = await usecase(hero_name=name)
@@ -107,6 +118,8 @@ async def get_hero_by_id(
     responses={
         201: {"description": "Hero has been created successfully"},
         400: {"description": "Bad request"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Admin role required"},
         500: {"description": "Internal server error"},
     },
 )
@@ -115,6 +128,7 @@ async def create_hero(
     hero_body: HeroRequestBodyScheme,
     usecase: FromDishka[ManualHeroCreationInRepoUseCase],
     presentation_mapper: FromDishka[HeroPresentationMapper],
+    _admin: CurrentAdmin,
 ) -> HeroResponseScheme:
 
     hero_dto_from_scheme = presentation_mapper.to_manual_hero_create_dto(hero_body)
@@ -129,6 +143,8 @@ async def create_hero(
     responses={
         200: {"description": "Hero has been updated with external data successfully"},
         400: {"description": "Bad Request"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Admin role required"},
         404: {"description": "Hero was not found"},
         500: {"description": "Internal server error"},
     },
@@ -137,6 +153,7 @@ async def create_hero(
 async def enrich_hero_data_from_external_api(
     usecase: FromDishka[EnrichHeroUseCase],
     presentation_mapper: FromDishka[HeroPresentationMapper],
+    _admin: CurrentAdmin,
     hero_id: UUID = Path(..., description="Hero UUID"),
     body: EnrichHeroBodyScheme = Body(
         ..., description="Request body with external hero id"
@@ -152,6 +169,8 @@ async def enrich_hero_data_from_external_api(
     responses={
         201: {"description": "Image uploaded successfully"},
         400: {"description": "Invalid image"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Admin role required"},
         404: {"description": "Hero not found"},
         500: {"description": "Internal server error"},
     },
@@ -161,6 +180,7 @@ async def upload_hero_image(
     image_service: FromDishka[ImageUploadServiceProtocol],
     usecase: FromDishka[UploadHeroImageUseCase],
     presentation_mapper: FromDishka[HeroPresentationMapper],
+    _admin: CurrentAdmin,
     hero_id: UUID = Path(..., description="Hero unique id"),
     file: UploadFile = File(..., description="Hero image to upload"),
 ):
@@ -179,6 +199,8 @@ async def upload_hero_image(
     responses={
         204: {"description": "Hero has been deleted successfully"},
         400: {"description": "Bad Request"},
+        401: {"description": "Authentication required"},
+        403: {"description": "Admin role required"},
         404: {"description": "Hero was not found"},
         500: {"description": "Internal server error"},
     },
@@ -186,6 +208,7 @@ async def upload_hero_image(
 @inject
 async def delete_hero(
     usecase: FromDishka[DeleteHeroFromRepoUseCase],
+    _admin: CurrentAdmin,
     hero_id: UUID = Path(..., description="Hero UUID"),
 ):
     await usecase(hero_id=hero_id)

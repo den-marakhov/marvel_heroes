@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.application.interfaces.repositories import HeroRepositoryProtocol
+from src.application.interfaces.hero.repositories import HeroRepositoryProtocol
 from src.domain.entities.hero import HeroEntity
 from src.infrastructures.db.exceptions import (
     RepositoryConflictError,
