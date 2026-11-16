@@ -5,8 +5,12 @@ from typing import final
 from sqlalchemy.ext.asyncio import AsyncSession
 import structlog
 
-from src.application.interfaces.repositories import HeroRepositoryProtocol
+from src.application.interfaces.hero.repositories import HeroRepositoryProtocol
 from src.application.interfaces.uow import UnitOfWorkProtocol
+from src.application.interfaces.user.repositories import UserRepositoryProtocol
+from src.application.interfaces.user_session.repositories import (
+    UserSessionRepositoryProtocol,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -15,7 +19,9 @@ logger = structlog.get_logger(__name__)
 @dataclass(frozen=True, kw_only=True, slots=True)
 class UnitOfWorkSQLAlchemy(UnitOfWorkProtocol):
     session: AsyncSession
-    repository: HeroRepositoryProtocol
+    heroes: HeroRepositoryProtocol
+    users: UserRepositoryProtocol
+    user_sessions: UserSessionRepositoryProtocol
 
     async def __aenter__(self) -> "UnitOfWorkSQLAlchemy":
         logger.debug("Starting database transaction")
@@ -45,7 +51,6 @@ class UnitOfWorkSQLAlchemy(UnitOfWorkProtocol):
         logger.debug("Transaction has been committed successfully")
 
     async def rollback(self) -> None:
-
         logger.debug("Rolling back transaction")
         await self.session.rollback()
         logger.debug("Transaction has been rolled back successfully")

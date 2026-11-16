@@ -8,10 +8,10 @@ from src.application.dtos.hero import (
     ManualCreateHeroDTO,
     UpdateHeroDTO,
 )
-from src.presentation.api.rest.v1.schemes.requests import (
+from src.presentation.api.rest.v1.schemes.heroes.requests import (
     HeroRequestBodyScheme,
 )
-from src.presentation.api.rest.v1.schemes.responses import (
+from src.presentation.api.rest.v1.schemes.heroes.responses import (
     ExternalHeroResponseScheme,
     HeroResponseScheme,
 )

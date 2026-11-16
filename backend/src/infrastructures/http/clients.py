@@ -6,8 +6,8 @@ import stamina
 import structlog
 
 from src.application.dtos.hero import ExternalAPIHeroDTO
-from src.application.exceptions import HeroNotFoundError
-from src.application.interfaces.http_clients import ExternalMarvelApiProtocol
+from src.application.exceptions.hero import HeroNotFoundError
+from src.application.interfaces.hero.http_clients import ExternalMarvelApiProtocol
 from src.infrastructures.http.mappers.external_hero_mapper import ExternalHeroAPIMapper
 
 logger = structlog.get_logger(__name__)

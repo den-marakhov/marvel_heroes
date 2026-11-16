@@ -2,6 +2,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 from src.config.app import AppSettings
+from src.config.auth import AuthSettings
 from src.config.database import DatabaseSettings
 from src.config.external_api import ExternalAPISettings
 from src.config.image_service_settings import ImageServiceSettings
@@ -16,6 +17,7 @@ class Settings(BaseSettings):
     image_service_settings: ImageServiceSettings = Field(
         default_factory=ImageServiceSettings  # type: ignore[arg-type]
     )
+    auth: AuthSettings = Field(default_factory=AuthSettings)  # type: ignore[arg-type]
 
     @property
     def app_name(self) -> str:
@@ -80,3 +82,27 @@ class Settings(BaseSettings):
     @property
     def allowed_mimes(self) -> list[str]:
         return self.image_service_settings.allowed_types
+
+    @property
+    def jwt_secret(self) -> str:
+        return self.auth.jwt_secret
+
+    @property
+    def jwt_access_ttl(self) -> int:
+        return self.auth.jwt_access_ttl
+
+    @property
+    def jwt_refresh_ttl(self) -> int:
+        return self.auth.jwt_refresh_ttl
+
+    @property
+    def admin_email(self) -> str:
+        return self.auth.admin_email
+
+    @property
+    def admin_password(self) -> str:
+        return self.auth.admin_password
+
+    @property
+    def admin_name(self) -> str:
+        return self.auth.admin_name

@@ -9,7 +9,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from src.config.base import Settings
 from src.infrastructures.db.models.base import Base
-from src.infrastructures.db.models.hero import HeroModel
+from src.infrastructures.db.models.hero import HeroModel  # noqa: F401
+from src.infrastructures.db.models.user import UserModel  # noqa: F401
+from src.infrastructures.db.models.user_session import UserSessionModel  # noqa: F401
 
 settings = Settings()
 
